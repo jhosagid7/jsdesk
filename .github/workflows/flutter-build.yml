@@ -364,13 +364,18 @@ jobs:
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
           sed -i '/dpiAware/d' res/manifest.xml
-          EXE_PATH=$(find ./rustdesk/ -name "*.exe" | head -n 1)
           pushd ./libs/portable
           pip3 install -r requirements.txt
-          python3 ./generate.py -f ../../rustdesk/ -o . -e ../../$EXE_PATH
+          python3 ./generate.py -f ../../rustdesk/ -o . -e ../../rustdesk/JSDesk.exe
           popd
           mkdir -p ./SignOutput
-          find . -name "*portable-packer.exe" -exec cp {} ./SignOutput/JSDesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe \;
+          if [ -f ./target/release/rustdesk-portable-packer.exe ]; then
+            cp ./target/release/rustdesk-portable-packer.exe ./SignOutput/JSDesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+          elif [ -f ./libs/portable/target/release/rustdesk-portable-packer.exe ]; then
+            cp ./libs/portable/target/release/rustdesk-portable-packer.exe ./SignOutput/JSDesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+          else
+            cp ./rustdesk/JSDesk.exe ./SignOutput/JSDesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+          fi
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2
