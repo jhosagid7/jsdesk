@@ -9,6 +9,8 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+-[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+-[0-9]+'
 
+permissions: write-all
+
 jobs:
   run-flutter-tag-build:
     uses: ./.github/workflows/flutter-build.yml
