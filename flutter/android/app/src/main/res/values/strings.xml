@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">RustDesk</string>
-    <string name="accessibility_service_description">Allow other devices to control your phone using virtual touch, when RustDesk screen sharing is established</string>
+    <string name="app_name">JSDesk</string>
+    <string name="accessibility_service_description">Permitir que otros dispositivos controlen su teléfono usando toque virtual cuando se establezca el soporte remoto con JSDesk</string>
 </resources>

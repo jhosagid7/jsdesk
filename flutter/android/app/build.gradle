@@ -97,7 +97,7 @@ android {
 
     defaultConfig {
         applicationId "com.jhonnypirela.jsdesk"
-        minSdkVersion 22
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
