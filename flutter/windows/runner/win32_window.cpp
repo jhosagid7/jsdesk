@@ -182,6 +182,21 @@ bool Win32Window::CreateAndShow(const std::wstring& title,
     return false;
   }
 
+  HICON hCustom = LoadCustomIcon();
+  if (hCustom != nullptr) {
+    SendMessageW(window, WM_SETICON, ICON_BIG, (LPARAM)hCustom);
+    SendMessageW(window, WM_SETICON, ICON_SMALL, (LPARAM)hCustom);
+  } else {
+    HICON hIconBig = (HICON)LoadImageW(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_APP_ICON), IMAGE_ICON, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), LR_DEFAULTCOLOR);
+    HICON hIconSmall = (HICON)LoadImageW(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_APP_ICON), IMAGE_ICON, GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
+    if (hIconBig) {
+      SendMessageW(window, WM_SETICON, ICON_BIG, (LPARAM)hIconBig);
+    }
+    if (hIconSmall) {
+      SendMessageW(window, WM_SETICON, ICON_SMALL, (LPARAM)hIconSmall);
+    }
+  }
+
   if (!showOnTaskBar) {
     // hide from taskbar
     HRESULT hr;

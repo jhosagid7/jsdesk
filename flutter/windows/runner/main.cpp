@@ -3,6 +3,7 @@
 #include <tchar.h>
 #include <uni_links_desktop/uni_links_desktop_plugin.h>
 #include <windows.h>
+#include <shobjidl_core.h>
 
 #include <algorithm>
 #include <iostream>
@@ -23,6 +24,8 @@ const wchar_t* getWindowClassName();
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
                       _In_ wchar_t *command_line, _In_ int show_command)
 {
+  SetCurrentProcessExplicitAppUserModelID(L"JH.JSDesk.Client.v1");
+
   HINSTANCE hInstance = LoadLibraryA("librustdesk.dll");
   if (!hInstance)
   {
