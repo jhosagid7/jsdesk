@@ -39,56 +39,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install prerequisites
-        run: |
-          sudo apt-get install ca-certificates -y
-          sudo apt-get update -y
-          sudo apt-get install -y \
-            clang \
-            cmake \
-            curl \
-            gcc \
-            git \
-            g++ \
-            libclang-dev \
-            libgtk-3-dev \
-            llvm-dev \
-            nasm \
-            ninja-build \
-            pkg-config \
-            wget
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # v1
-        with:
-          toolchain: ${{ env.RUST_VERSION }}
-          targets: ${{ matrix.job.target }}
-          components: "rustfmt"
-
-      - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
-        with:
-          prefix-key: bridge-${{ matrix.job.os }}
-
-      - name: Cache Bridge
-        id: cache-bridge
-        uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3
-        with:
-          path: /tmp/flutter_rust_bridge
-          key: bridge-${{ matrix.job.flutter-version }}
-
-      - name: Install flutter
-        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
-        with:
-          channel: "stable"
-          flutter-version: ${{ matrix.job.flutter-version }}
-          cache: true
-
       - name: Prepare bridge artifacts
         shell: bash
         run: |
           mkdir -p flutter/ios/Runner
           cp flutter/macos/Runner/bridge_generated.h flutter/ios/Runner/bridge_generated.h 2>/dev/null || true
-          pushd flutter && flutter pub get && popd
 
       - name: Upload Artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
